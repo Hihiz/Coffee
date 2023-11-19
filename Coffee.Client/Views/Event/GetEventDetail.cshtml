@@ -1,0 +1,45 @@
+﻿@model Coffee.Client.Models.Event
+
+@{
+    ViewData["Title"] = "Детали новости";
+}
+
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item active">Детали новости</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Детали новости</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <form class="ps-lg-4">
+        @*  @if (ViewBag.userRole == "Admin")
+        { *@
+        <h3 class="mt-0">
+            @Model.Title
+            @if (ViewBag.userRole == "Admin")
+            {
+                <a asp-action="UpdateEvent" asp-controller="Event" asp-route-id="@Model.Id" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a>
+                <div class="mt-4">
+                    <h3> @Model.IsActive</h3>
+                </div>
+            }
+        </h3>
+        @* } *@
+        <p class="mb-1">Дата публикации новости: @Model.CreateDate</p>
+
+        <div class="mt-4">
+            <h3> @Model.Text</h3>
+        </div>
+    </form>
+</div> <!-- container -->
