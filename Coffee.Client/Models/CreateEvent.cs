@@ -4,6 +4,8 @@ namespace Coffee.Client.Models
 {
     public class CreateEvent
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Введите заголовок новости")]
         [Display(Name = "Заголовок")]
         public string Title { get; set; }

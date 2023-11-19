@@ -16,7 +16,7 @@ namespace Coffee.Client.Models
         public double Price { get; set; }
 
         [Required(ErrorMessage = "Введите описание")]
-        [Display(Name = "описание")]
+        [Display(Name = "Описание")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Загрузите изображение")]
