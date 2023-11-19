@@ -1,0 +1,96 @@
+﻿@model List<Coffee.Client.Dto.ProductListDto>
+
+@{
+    ViewData["Title"] = "Продукты";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    @if (ViewBag.userRole == "Admin")
+                    {
+                        <div class="col-sm-5">
+                            <a asp-action="CreateProduct" asp-controller="Product" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Добавить продукт</a>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="text-sm-end">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2 me-1">Import</button>
+                                <button type="button" class="btn btn-light mb-2">Export</button>
+                            </div>
+                        </div>
+
+                        <!-- end col-->
+                    }
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="all" style="width: 20px;">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck1">
+                                        <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th class="all">Продукты</th>
+                                <th>Цена</th>
+                                <th>Категория</th>
+                                @if (ViewBag.userRole == "Admin")
+                                {
+                                    <th style="width: 85px;">Действие</th>
+                                }
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck2">
+                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a asp-route-id="@item.Id" asp-action="GetProductDetail"><img src="~/Images/@item.Image" alt="contact-img" title="contact-img" class="rounded me-3" height="48" /> </a>
+                                        <p class="m-0 d-inline-block align-middle font-16">
+                                            <a asp-route-id="@item.Id" asp-action="GetProductDetail" class="text-body">@item.Name</a>
+                                            <br />
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                <span class="text-warning mdi mdi-star"></span>
+                                            }
+                                        </p>
+                                    </td>
+                                    <td>
+                                        @item.Price
+                                    </td>
+                                    <td>
+                                        @item.CategoryName
+                                    </td>
+
+                                    @if (ViewBag.userRole == "Admin")
+                                    {
+                                        <td class="table-action">
+                                            <a asp-action="UpdateProduct" asp-route-id="@item.Id" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <form asp-controller="Product" asp-action="DeleteProduct" method="post" asp-route-id="@item.Id" class="action-icon">
+
+                                                <input type="image" src="/Images/delete.png" style="width:18px; height:18px" />
+                                            </form>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->   
