@@ -1,6 +1,5 @@
 ﻿using Coffee.Application.Interfaces;
 using Coffee.Application.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffee.Web.Controllers

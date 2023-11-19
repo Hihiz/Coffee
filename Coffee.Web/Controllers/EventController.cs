@@ -5,10 +5,12 @@ using Coffee.Application.Events.Queries.GetEventDetail;
 using Coffee.Application.Events.Queries.GetEventList;
 using Coffee.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffee.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventController : ControllerBase
@@ -17,8 +19,9 @@ namespace Coffee.Web.Controllers
 
         public EventController(IMediator mediator) => _mediator = mediator;
 
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult> GetNews()
+        public async Task<ActionResult> GetEvent()
         {
             GetEventListQuery query = new GetEventListQuery();
             List<Event> events = await _mediator.Send(query);
@@ -26,8 +29,9 @@ namespace Coffee.Web.Controllers
             return Ok(events);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetNewsDetail(int id)
+        public async Task<ActionResult> GetEventDetail(int id)
         {
             GetEventDetailQuery query = new GetEventDetailQuery(id);
             Event events = await _mediator.Send(query);
@@ -35,11 +39,13 @@ namespace Coffee.Web.Controllers
             return Ok(events);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> CreateNews(CreateEventCommand command) => Ok(await _mediator.Send(command));
+        public async Task<ActionResult> CreateEvent(CreateEventCommand command) => Ok(await _mediator.Send(command));
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateNews(int id, UpdateEventCommand command)
+        public async Task<ActionResult> UpdateEvent(int id, UpdateEventCommand command)
         {
             if (id != command.Id)
             {
@@ -51,8 +57,9 @@ namespace Coffee.Web.Controllers
             return Ok(events);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteNews(int id)
+        public async Task<ActionResult> DeleteEvent(int id)
         {
             DeleteEventCommand command = new DeleteEventCommand(id);
 

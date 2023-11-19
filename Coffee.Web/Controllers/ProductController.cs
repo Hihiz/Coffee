@@ -4,10 +4,12 @@ using Coffee.Application.Products.Commands.UpdateProduct;
 using Coffee.Application.Products.Queries.GetProductDetail;
 using Coffee.Application.Products.Queries.GetProductList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffee.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -16,6 +18,7 @@ namespace Coffee.Web.Controllers
 
         public ProductController(IMediator mediator) => (_mediator) = (mediator);
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetProduct()
         {
@@ -25,6 +28,7 @@ namespace Coffee.Web.Controllers
             return Ok(vm.ProductList);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetProductDetail(int id)
         {
@@ -34,9 +38,11 @@ namespace Coffee.Web.Controllers
             return Ok(dto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateProduct(CreateProductCommand command) => Ok(await _mediator.Send(command));
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateProduct(int id, UpdateProductCommand command)
         {
@@ -50,6 +56,7 @@ namespace Coffee.Web.Controllers
             return Ok(dto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
