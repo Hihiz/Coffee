@@ -29,6 +29,11 @@ namespace Coffee.Client.Controllers
                 }
             }
 
+            if (ViewBag.userRole == null)
+            {
+                return View(eventList.Where(n => n.IsActive).ToList());
+            }
+
             return View(eventList);
         }
 
