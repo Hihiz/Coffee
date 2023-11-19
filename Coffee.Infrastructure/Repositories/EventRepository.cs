@@ -11,7 +11,7 @@ namespace Coffee.Infrastructure.Repositories
 
         public EventRepository(ApplicationDbContext db) => _db = db;
 
-        public async Task<List<Event>> GetAll() => await _db.Events.ToListAsync();
+        public async Task<List<Event>> GetAll() => await _db.Events.OrderByDescending(e => e.CreateDate).ToListAsync();
 
         public async Task<Event> GetById(int id) => await _db.Events.FirstOrDefaultAsync(p => p.Id == id);
 
