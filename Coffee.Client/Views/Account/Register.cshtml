@@ -1,0 +1,73 @@
+﻿@model RegistrationModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+    ViewData["Title"] = "Регистрация";
+}
+
+<!-- Logo-->
+<div class="card-header pt-4 pb-4 text-center bg-primary">
+    <a asp-action="Register">
+        <span><img src="~/Images/logo.png" alt="" height="60"></span>
+    </a>
+</div>
+
+<div class="card-body p-4">
+
+    <div class="text-center w-75 m-auto">
+        <h4 class="text-dark-50 text-center mt-0 fw-bold">Бесплатная регистрация</h4>
+        <p class="text-muted mb-4">У вас нет учетной записи? Создайте свою учетную запись, это займет меньше минуты</p>
+    </div>
+
+    <form asp-action="Register">
+
+        <div class="mb-3">
+            <label asp-for="FirstName" class="form-label"></label>
+            <input asp-for="FirstName" class="form-control" placeholder="Введите свое имя" required>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LastName" class="form-label"></label>
+            <input asp-for="LastName" class="form-control" placeholder="Введите свою фамилию" required>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="Введите свой email" required>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" placeholder="Введите свой пароль" required>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PasswordConfirm" class="form-label"></label>
+            <input asp-for="PasswordConfirm" class="form-control" placeholder="Повторите свой пароль" required>
+            <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 text-center">
+            <button class="btn btn-primary" type="submit"> Зарегистрироваться </button>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <p class="text-muted">У вас уже есть аккаунт? <a asp-action="Login" class="text-muted ms-1"><b>Вход</b></a></p>
+            </div> <!-- end col-->
+        </div>
+    </form>
+
+
+</div> <!-- end card-body -->
+<!-- end row -->
+<!-- end row -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
