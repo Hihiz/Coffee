@@ -2,6 +2,7 @@
 using Coffee.Application.Models;
 using Coffee.Domain.Constants;
 using Coffee.Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -17,17 +18,17 @@ namespace Coffee.Infrastructure.Identity
         public UserAuthenticationService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationDbContext db) =>
             (_userManager, _signInManager, _db) = (userManager, signInManager, db);
 
-        public async Task<StatusResponse> RegisterAsync(RegistrationModel model)
+        public async Task<IBaseStatus> RegisterAsync(RegistrationModel model)
         {
-            StatusResponse status = new StatusResponse();
             ApplicationUser userExists = await _userManager.FindByEmailAsync(model.Email);
 
             if (userExists != null)
             {
-                status.StatusCode = 0;
-                status.Message = "Пользователь уже существует";
-
-                return status;
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = "Пользователь уже существует"
+                };
             }
 
             ApplicationUser user = new ApplicationUser()
@@ -44,31 +45,34 @@ namespace Coffee.Infrastructure.Identity
 
             if (!result.Succeeded)
             {
-                status.StatusCode = 0;
-                status.Message = "Не удалось создать пользователя";
-
-                return status;
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = "Не удалось создать пользователя"
+                };
             }
 
             ApplicationUser findUser = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
             if (findUser == null)
             {
-                status.StatusCode = 0;
-                status.Message = $"Пользователь {model.FirstName} {model.LastName} не найден";
-
-                return status;
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = $"Пользователь {model.FirstName} {model.LastName} не найден"
+                };
             }
 
             await _userManager.AddToRoleAsync(findUser, Roles.Member);
 
-            status.StatusCode = 1;
-            status.Message = $"Вы успешно зарегистрировались";
-
-            return status;
+            return new StatusResponseError()
+            {
+                StatusCode = 200,
+                Message = "Вы успешно зарегистрировались"
+            };
         }
 
-        public async Task<StatusResponse> LoginAsync(LoginModel model)
+        public async Task<IBaseStatus> LoginAsync(LoginModel model)
         {
             StatusResponse status = new StatusResponse();
 
@@ -76,18 +80,20 @@ namespace Coffee.Infrastructure.Identity
 
             if (user == null)
             {
-                status.StatusCode = 0;
-                status.Message = "Неверное имя пользователя";
-
-                return status;
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = "Неверное имя пользователя"
+                };
             }
 
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                status.StatusCode = 0;
-                status.Message = "Неверный пароль";
-
-                return status;
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = "Неверный пароль"
+                };
             }
 
             List<long> roleId = await _db.UserRoles.Where(u => u.UserId == user.Id).Select(u => u.RoleId).ToListAsync();
@@ -112,8 +118,8 @@ namespace Coffee.Infrastructure.Identity
 
                 IdentityRole<long> adminRole = roles.Where(a => a.Name == "Admin").FirstOrDefault();
 
-                status.StatusCode = 1;
-                status.Message = "Успешно вошел в систему";
+                //status.StatusCode = 1;
+                //status.Message = "Успешно вошел в систему";
                 status.UserId = user.Id;
 
                 if (adminRole != null)
@@ -132,8 +138,11 @@ namespace Coffee.Infrastructure.Identity
             }
             else
             {
-                status.StatusCode = 0;
-                status.Message = "Ошибка при входе в систему";
+                return new StatusResponseError()
+                {
+                    StatusCode = 401,
+                    Message = "Ошибка при входе в систему"
+                };
             }
 
             return status;
