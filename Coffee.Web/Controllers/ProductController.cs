@@ -39,8 +39,19 @@ namespace Coffee.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(CreateProductCommand command) => Ok(await _mediator.Send(command));
+        public async Task<ActionResult> CreateProduct(CreateProductCommand command)
+        {
+            var result = new CreateProductCommandValidator().Validate(command);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(string.Join('\n', result.Errors));
+            }
+
+            return Ok(await _mediator.Send(command));
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
@@ -51,9 +62,14 @@ namespace Coffee.Web.Controllers
                 return NotFound();
             }
 
-            ProductDetailDto dto = await _mediator.Send(command);
+            var result = new UpdateProductCommandValidator().Validate(command);
 
-            return Ok(dto);
+            if (!result.IsValid)
+            {
+                return BadRequest(string.Join('\n', result.Errors));
+            }
+
+            return Ok(await _mediator.Send(command));
         }
 
         [Authorize(Roles = "Admin")]

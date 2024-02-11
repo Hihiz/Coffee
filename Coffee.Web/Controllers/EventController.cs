@@ -41,7 +41,17 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> CreateEvent(CreateEventCommand command) => Ok(await _mediator.Send(command));
+        public async Task<ActionResult> CreateEvent(CreateEventCommand command)
+        {
+            var result = new CreateEventCommandValidator().Validate(command);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(string.Join('\n', result.Errors));
+            }
+
+            return Ok(await _mediator.Send(command));
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
@@ -52,9 +62,14 @@ namespace Coffee.Web.Controllers
                 return NotFound();
             }
 
-            Event events = await _mediator.Send(command);
+            var result = new UpdateEventCommandValidator().Validate(command);
 
-            return Ok(events);
+            if (!result.IsValid)
+            {
+                return BadRequest(string.Join('\n', result.Errors));
+            }
+
+            return Ok(await _mediator.Send(command));
         }
 
         [Authorize(Roles = "Admin")]

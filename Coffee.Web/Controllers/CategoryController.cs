@@ -26,6 +26,16 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> CreateCategory(CreateCategoryCommand command) => Ok(await _mediator.Send(command));
+        public async Task<ActionResult> CreateCategory(CreateCategoryCommand command)
+        {
+            var result = new CreateCategoryCommandValidator().Validate(command);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(string.Join('\n', result.Errors));
+            }
+
+            return Ok(await _mediator.Send(command));
+        }
     }
 }
