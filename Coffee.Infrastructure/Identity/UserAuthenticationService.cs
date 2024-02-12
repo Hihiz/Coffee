@@ -2,7 +2,6 @@
 using Coffee.Application.Models;
 using Coffee.Domain.Constants;
 using Coffee.Infrastructure.Data;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -118,8 +117,6 @@ namespace Coffee.Infrastructure.Identity
 
                 IdentityRole<long> adminRole = roles.Where(a => a.Name == "Admin").FirstOrDefault();
 
-                //status.StatusCode = 1;
-                //status.Message = "Успешно вошел в систему";
                 status.UserId = user.Id;
 
                 if (adminRole != null)
@@ -135,6 +132,8 @@ namespace Coffee.Infrastructure.Identity
                 status.Password = model.Password;
                 status.FirstName = user.FirstName;
                 status.LastName = user.LastName;
+                status.StatusCode = 200;
+                status.Message = "Успешно";
             }
             else
             {
