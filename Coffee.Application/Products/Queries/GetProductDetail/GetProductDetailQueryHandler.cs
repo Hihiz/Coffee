@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Coffee.Application.Common.Exceptions;
 using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
@@ -18,7 +19,7 @@ namespace Coffee.Application.Products.Queries.GetProductDetail
 
             if (product == null)
             {
-                throw new Exception("Продукт не найден");
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             return _mapper.Map<ProductDetailDto>(product);

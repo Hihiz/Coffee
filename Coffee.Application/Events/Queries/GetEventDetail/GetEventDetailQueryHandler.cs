@@ -1,4 +1,5 @@
-﻿using Coffee.Application.Interfaces;
+﻿using Coffee.Application.Common.Exceptions;
+using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
 
@@ -16,7 +17,7 @@ namespace Coffee.Application.Events.Queries.GetEventDetail
 
             if (events == null)
             {
-                throw new Exception("Новость не найдена");
+                throw new NotFoundException(nameof(Event), request.Id);
             }
 
             return events;
