@@ -65,12 +65,12 @@ namespace Coffee.Client.Controllers
 
                     statusResponse = JsonConvert.DeserializeObject<StatusResponse>(apiResponse);
 
-                    if (statusResponse.StatusCode == 0)
-                    {
-                        TempData["statusMessage"] = statusResponse.Message;
+                    //if (statusResponse.StatusCode == 0)
+                    //{
+                    //    TempData["statusMessage"] = statusResponse.Message;
 
-                        return View();
-                    }
+                    //    return View();
+                    //}
 
                     HttpContext.Session.SetString("userLogin", statusResponse.Username);
                     HttpContext.Session.SetString("userPassword", statusResponse.Password);
