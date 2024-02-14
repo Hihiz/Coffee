@@ -13,21 +13,14 @@ namespace Coffee.Web.Controllers
         public AccountController(IUserAuthenticationService authService) => (_authService) = (authService);
 
         [HttpPost("register")]
-        public async Task<ActionResult<StatusResponse>> Register(RegistrationModel registrationModel)
+        public async Task<ActionResult> Register(RegistrationModel registrationModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("ModelState Error");
             }
 
-            StatusResponse result = await _authService.RegisterAsync(registrationModel);
-
-            if (result.StatusCode == 0)
-            {
-                return BadRequest(result);
-            }
-
-            return result;
+            return Ok(await _authService.RegisterAsync(registrationModel));
         }
 
         [HttpPost("login")]
@@ -38,24 +31,7 @@ namespace Coffee.Web.Controllers
                 return BadRequest("ModelState Error");
             }
 
-            StatusResponse result = await _authService.LoginAsync(loginModel);
-
-            if (result.StatusCode == 0)
-            {
-                return BadRequest(new StatusResponse { StatusCode = result.StatusCode, Message = result.Message });
-            }
-
-            return Ok(new StatusResponse
-            {
-                UserId = (long)result.UserId,
-                Role = result.Role,
-                Username = result.Username,
-                Password = result.Password,
-                FirstName = result.FirstName,
-                LastName = result.LastName,
-                StatusCode = result.StatusCode,
-                Message = result.Message
-            });
+            return Ok(await _authService.LoginAsync(loginModel));
         }
 
         [HttpPost("logout")]
