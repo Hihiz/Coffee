@@ -24,7 +24,7 @@ namespace Coffee.Web.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<StatusResponse>> Authenticate(LoginModel loginModel)
+        public async Task<ActionResult<StatusAuthResponse>> Authenticate(LoginModel loginModel)
         {
             if (!ModelState.IsValid)
             {
