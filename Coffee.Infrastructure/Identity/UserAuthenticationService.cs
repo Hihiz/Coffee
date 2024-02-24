@@ -23,7 +23,7 @@ namespace Coffee.Infrastructure.Identity
 
             if (userExists != null)
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = "Пользователь уже существует"
@@ -44,7 +44,7 @@ namespace Coffee.Infrastructure.Identity
 
             if (!result.Succeeded)
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = "Не удалось создать пользователя"
@@ -55,7 +55,7 @@ namespace Coffee.Infrastructure.Identity
 
             if (findUser == null)
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = $"Пользователь {model.FirstName} {model.LastName} не найден"
@@ -64,7 +64,7 @@ namespace Coffee.Infrastructure.Identity
 
             await _userManager.AddToRoleAsync(findUser, Roles.Member);
 
-            return new StatusResponseError()
+            return new StatusResponse()
             {
                 StatusCode = 200,
                 Message = "Вы успешно зарегистрировались"
@@ -73,13 +73,13 @@ namespace Coffee.Infrastructure.Identity
 
         public async Task<IBaseStatus> LoginAsync(LoginModel model)
         {
-            StatusResponse status = new StatusResponse();
+            StatusAuthResponse status = new StatusAuthResponse();
 
             ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = "Неверное имя пользователя"
@@ -88,7 +88,7 @@ namespace Coffee.Infrastructure.Identity
 
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = "Неверный пароль"
@@ -137,7 +137,7 @@ namespace Coffee.Infrastructure.Identity
             }
             else
             {
-                return new StatusResponseError()
+                return new StatusResponse()
                 {
                     StatusCode = 401,
                     Message = "Ошибка при входе в систему"
