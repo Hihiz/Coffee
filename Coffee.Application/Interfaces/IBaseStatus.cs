@@ -5,11 +5,4 @@
         int StatusCode { get; set; }
         string Message { get; set; }
     }
-
-    public interface IBaseStatus<T>
-    {
-        int StatusCode { get; set; }
-        string Message { get; set; }
-        T Status { get; set; }
-    }
 }
