@@ -24,9 +24,9 @@ namespace Coffee.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped<IRepository<Product>, ProductRepository>();
-            services.AddScoped<IRepository<Category>, CategoryRepository>();
-            services.AddScoped<IRepository<Event>, EventRepository>();
+            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
+            services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
+            services.AddScoped<IBaseRepository<Event>, EventRepository>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 

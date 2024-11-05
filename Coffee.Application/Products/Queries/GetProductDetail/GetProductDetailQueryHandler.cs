@@ -8,14 +8,14 @@ namespace Coffee.Application.Products.Queries.GetProductDetail
 {
     public class GetProductDetailQueryHandler : IRequestHandler<GetProductDetailQuery, ProductDetailDto>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IBaseRepository<Product> _repository;
         private readonly IMapper _mapper;
 
-        public GetProductDetailQueryHandler(IRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
+        public GetProductDetailQueryHandler(IBaseRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
 
         public async Task<ProductDetailDto> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
         {
-            Product product = await _repository.GetById(request.Id);
+            Product product = await _repository.GetByIdAsync(request.Id);
 
             if (product == null)
             {

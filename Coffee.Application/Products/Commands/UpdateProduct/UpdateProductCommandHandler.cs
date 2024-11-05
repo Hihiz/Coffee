@@ -8,10 +8,10 @@ namespace Coffee.Application.Products.Commands.UpdateProduct
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDetailDto>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IBaseRepository<Product> _repository;
         private readonly IMapper _mapper;
 
-        public UpdateProductCommandHandler(IRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
+        public UpdateProductCommandHandler(IBaseRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
 
         public async Task<ProductDetailDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
@@ -19,7 +19,7 @@ namespace Coffee.Application.Products.Commands.UpdateProduct
 
             try
             {
-                _repository.Update(product);
+                _repository.UpdateAsync(product);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception)

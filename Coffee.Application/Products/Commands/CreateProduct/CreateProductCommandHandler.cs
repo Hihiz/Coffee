@@ -8,10 +8,10 @@ namespace Coffee.Application.Products.Commands.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDetailDto>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IBaseRepository<Product> _repository;
         private readonly IMapper _mapper;
 
-        public CreateProductCommandHandler(IRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
+        public CreateProductCommandHandler(IBaseRepository<Product> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
 
         public async Task<ProductDetailDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
@@ -19,7 +19,7 @@ namespace Coffee.Application.Products.Commands.CreateProduct
 
             try
             {
-                _repository.Create(product);
+                _repository.CreateAsync(product);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception ex)

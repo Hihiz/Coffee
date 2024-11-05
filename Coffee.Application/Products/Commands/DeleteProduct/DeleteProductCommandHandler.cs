@@ -6,13 +6,13 @@ namespace Coffee.Application.Products.Commands.DeleteProduct
 {
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, int>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IBaseRepository<Product> _repository;
 
-        public DeleteProductCommandHandler(IRepository<Product> repository) => (_repository) = (repository);
+        public DeleteProductCommandHandler(IBaseRepository<Product> repository) => (_repository) = (repository);
 
         public async Task<int> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = await _repository.GetById(request.Id);
+            Product product = await _repository.GetByIdAsync(request.Id);
 
             if (product == null)
             {
