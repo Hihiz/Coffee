@@ -1,8 +1,8 @@
 ﻿using Coffee.Application.Interfaces;
-using Coffee.Application.Models;
 using Coffee.Domain.Entities;
 using Coffee.Infrastructure.Data;
 using Coffee.Infrastructure.Identity;
+using Coffee.Infrastructure.Interfaces;
 using Coffee.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

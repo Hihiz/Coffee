@@ -2,6 +2,8 @@
 using Coffee.Application.Models;
 using Coffee.Domain.Constants;
 using Coffee.Infrastructure.Data;
+using Coffee.Infrastructure.Interfaces;
+using Coffee.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;

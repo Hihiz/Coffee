@@ -1,5 +1,5 @@
-﻿using Coffee.Application.Interfaces;
-using Coffee.Application.Models;
+﻿using Coffee.Infrastructure.Interfaces;
+using Coffee.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffee.Web.Controllers
