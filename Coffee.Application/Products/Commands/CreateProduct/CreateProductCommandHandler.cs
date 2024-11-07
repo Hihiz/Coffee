@@ -16,18 +16,21 @@ namespace Coffee.Application.Products.Commands.CreateProduct
         public async Task<ProductDetailDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             Product product = _mapper.Map<Product>(request);
+            ProductDetailDto productDetailDto = new ProductDetailDto();
 
             try
             {
-                _repository.CreateAsync(product);
+                product = await _repository.CreateAsync(product);
                 await _repository.SaveChangesAsync();
+
+                productDetailDto = _mapper.Map<ProductDetailDto>(product);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
 
-            ProductDetailDto productDetailDto = _mapper.Map<ProductDetailDto>(product);
+                throw;
+            }
 
             return productDetailDto;
         }
