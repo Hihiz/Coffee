@@ -15,12 +15,8 @@ namespace Coffee.Application.Products.Queries.GetProductDetail
 
         public async Task<ProductDetailDto> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
         {
-            Product product = await _repository.GetByIdAsync(request.Id);
-
-            if (product == null)
-            {
+            Product product = await _repository.GetByIdAsync(request.Id) ??
                 throw new NotFoundException(nameof(Product), request.Id);
-            }
 
             return _mapper.Map<ProductDetailDto>(product);
         }
