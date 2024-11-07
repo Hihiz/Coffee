@@ -1,4 +1,5 @@
-﻿using Coffee.Application.Interfaces;
+﻿using Coffee.Application.Common.Exceptions;
+using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
 
@@ -12,21 +13,19 @@ namespace Coffee.Application.Products.Commands.DeleteProduct
 
         public async Task<int> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = await _repository.GetByIdAsync(request.Id);
-
-            if (product == null)
-            {
-                throw new Exception("Продукт не найден");
-            }
+            Product product = await _repository.GetByIdAsync(request.Id) ??
+              throw new NotFoundException("Продукт не найден", request.Id);
 
             try
             {
-                _repository.Delete(product);
+                await _repository.Delete(product);
                 await _repository.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Продукт не найден");
+                Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return product.Id;
