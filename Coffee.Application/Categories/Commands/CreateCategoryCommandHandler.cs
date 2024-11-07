@@ -19,7 +19,7 @@ namespace Coffee.Application.Categories.Commands
 
             try
             {
-                await _repository.CreateAsync(category);
+                category = await _repository.CreateAsync(category);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception ex)
