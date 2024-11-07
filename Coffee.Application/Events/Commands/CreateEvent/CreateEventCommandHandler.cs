@@ -18,7 +18,7 @@ namespace Coffee.Application.Events.Commands.CreateEvent
 
             try
             {
-                _repository.CreateAsync(events);
+                events = await _repository.CreateAsync(events);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception ex)
