@@ -1,4 +1,5 @@
-﻿using Coffee.Application.Interfaces;
+﻿using Coffee.Application.Common.Exceptions;
+using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
 
@@ -12,7 +13,8 @@ namespace Coffee.Application.Events.Queries.GetEventList
 
         public async Task<List<Event>> Handle(GetEventListQuery request, CancellationToken cancellationToken)
         {
-            List<Event> eventList = await _repository.GetAllAsync();
+            List<Event> eventList = await _repository.GetAllAsync() ??
+            throw new NotFoundException("Новость не найдена", request);
 
             return eventList;
         }

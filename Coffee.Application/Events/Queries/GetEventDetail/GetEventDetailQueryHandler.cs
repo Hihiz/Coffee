@@ -13,12 +13,8 @@ namespace Coffee.Application.Events.Queries.GetEventDetail
 
         public async Task<Event> Handle(GetEventDetailQuery request, CancellationToken cancellationToken)
         {
-            Event events = await _repository.GetByIdAsync(request.Id);
-
-            if (events == null)
-            {
-                throw new NotFoundException(nameof(Event), request.Id);
-            }
+            Event events = await _repository.GetByIdAsync(request.Id) ??
+                 throw new NotFoundException(nameof(Event), request.Id);
 
             return events;
         }
