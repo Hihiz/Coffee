@@ -19,12 +19,14 @@ namespace Coffee.Application.Categories.Commands
 
             try
             {
-                _repository.CreateAsync(category);
+                await _repository.CreateAsync(category);
                 await _repository.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Ошибка при создании категории");
+                Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return category;
