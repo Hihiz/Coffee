@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Coffee.Application.Common.Exceptions;
 using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
@@ -14,16 +15,19 @@ namespace Coffee.Application.Events.Commands.UpdateEvent
 
         public async Task<Event> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
         {
-            Event events = _mapper.Map<Event>(request);
+            Event events = _mapper.Map<Event>(request) ??
+                throw new NotFoundException("Новость не найдена", request.Id); 
 
             try
             {
-                _repository.UpdateAsync(events);
+                await _repository.UpdateAsync(events);
                 await _repository.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Новость не найдена");
+                Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return events;
