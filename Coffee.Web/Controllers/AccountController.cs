@@ -13,7 +13,7 @@ namespace Coffee.Web.Controllers
         public AccountController(IUserAuthenticationService authService) => (_authService) = (authService);
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegistrationModel registrationModel)
+        public async Task<ActionResult> Register([FromBody] RegistrationModel registrationModel)
         {
             if (!ModelState.IsValid)
             {
@@ -24,7 +24,7 @@ namespace Coffee.Web.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<StatusAuthResponse>> Authenticate(LoginModel loginModel)
+        public async Task<ActionResult<StatusAuthResponse>> Authenticate([FromBody] LoginModel loginModel)
         {
             if (!ModelState.IsValid)
             {
