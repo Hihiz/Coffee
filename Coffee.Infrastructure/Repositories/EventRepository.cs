@@ -15,11 +15,21 @@ namespace Coffee.Infrastructure.Repositories
 
         public async Task<Event> GetByIdAsync(int id) => await _db.Events.FirstOrDefaultAsync(p => p.Id == id);
 
-        public void CreateAsync(Event entity) => _db.Events.Add(entity);
+        public async Task<Event> CreateAsync(Event entity)
+        {
+            await _db.Events.AddAsync(entity);
 
-        public void UpdateAsync(Event entity) => _db.Update(entity);
+            return entity;
+        }
 
-        public void Delete(Event entity) => _db.Remove(entity);
+        public async Task<Event> UpdateAsync(Event entity)
+        {
+            _db.Update(entity);
+
+            return entity;
+        }
+
+        public async Task Delete(Event entity) => _db.Remove(entity);
 
         public async Task SaveChangesAsync() => await _db.SaveChangesAsync();
     }
