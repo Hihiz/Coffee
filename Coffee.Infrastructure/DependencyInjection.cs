@@ -24,11 +24,7 @@ namespace Coffee.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
-            services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
-            services.AddScoped<IBaseRepository<Event>, EventRepository>();
-
-            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+            services.RepositoriesInit();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -44,5 +40,13 @@ namespace Coffee.Infrastructure
 
             return services;
         }
+
+        private static void RepositoriesInit(this IServiceCollection services)
+        {
+            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
+            services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
+            services.AddScoped<IBaseRepository<Event>, EventRepository>();
+        }     
+        }     
     }
 }
