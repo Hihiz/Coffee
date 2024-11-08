@@ -15,11 +15,16 @@ namespace Coffee.Infrastructure.Repositories
 
         public Task<Category> GetByIdAsync(int id) => throw new NotImplementedException();
 
-        public void CreateAsync(Category entity) => _db.Categories.Add(entity);
+        public async Task<Category> CreateAsync(Category entity)
+        {
+            await _db.Categories.AddAsync(entity);
 
-        public void UpdateAsync(Category entity) => throw new NotImplementedException();
+            return entity;
+        }
 
-        public void Delete(Category entity) => throw new NotImplementedException();
+        public async Task<Category> UpdateAsync(Category entity) => throw new NotImplementedException();
+
+        public async Task Delete(Category entity) => throw new NotImplementedException();
 
         public async Task SaveChangesAsync() => await _db.SaveChangesAsync();
     }
