@@ -15,19 +15,23 @@ namespace Coffee.Infrastructure.Repositories
 
         public async Task<Product> GetByIdAsync(int id) => await _db.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
 
-        public void CreateAsync(Product entity)
+        public async Task<Product> CreateAsync(Product entity)
         {
-            _db.Add(entity);
+            await _db.AddAsync(entity);
             _db.Entry(entity).Reference(p => p.Category).Load();
+
+            return entity;
         }
 
-        public void UpdateAsync(Product entity)
+        public async Task<Product> UpdateAsync(Product entity)
         {
             _db.Update(entity);
             _db.Entry(entity).Reference(p => p.Category).Load();
+
+            return entity;
         }
 
-        public void Delete(Product entity) => _db.Remove(entity);
+        public async Task Delete(Product entity) => _db.Remove(entity);
 
         public async Task SaveChangesAsync() => await _db.SaveChangesAsync();
     }
