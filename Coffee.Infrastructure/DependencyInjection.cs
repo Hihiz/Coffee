@@ -25,6 +25,7 @@ namespace Coffee.Infrastructure
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
             services.RepositoriesInit();
+            services.ServiceInit();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -46,7 +47,12 @@ namespace Coffee.Infrastructure
             services.AddScoped<IBaseRepository<Product>, ProductRepository>();
             services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
             services.AddScoped<IBaseRepository<Event>, EventRepository>();
-        }     
-        }     
+        }
+
+        private static void ServiceInit(this IServiceCollection services)
+        {
+            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+        }
+
     }
 }
