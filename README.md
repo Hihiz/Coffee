@@ -1,8 +1,8 @@
 # Coffee
 
 ## Стек
-* ASP.NET Core 7.0 - Web Api
-* ASP.NET MVC 7.0 - Client
+* ASP.NET Core 9.0 - Web Api
+* ASP.NET MVC 9.0 - Client
 * Basic Auth
 * EF Core
 * PostgreSql
