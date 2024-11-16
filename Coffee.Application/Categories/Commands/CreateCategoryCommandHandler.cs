@@ -6,9 +6,9 @@ namespace Coffee.Application.Categories.Commands
 {
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
     {
-        private readonly IRepository<Category> _repository;
+        private readonly IBaseRepository<Category> _repository;
 
-        public CreateCategoryCommandHandler(IRepository<Category> repository) => (_repository) = (repository);
+        public CreateCategoryCommandHandler(IBaseRepository<Category> repository) => (_repository) = (repository);
 
         public async Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
@@ -19,12 +19,14 @@ namespace Coffee.Application.Categories.Commands
 
             try
             {
-                _repository.Create(category);
+                category = await _repository.CreateAsync(category);
                 await _repository.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Ошибка при создании категории");
+                Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return category;

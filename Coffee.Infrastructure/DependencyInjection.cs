@@ -1,8 +1,8 @@
 ﻿using Coffee.Application.Interfaces;
-using Coffee.Application.Models;
 using Coffee.Domain.Entities;
 using Coffee.Infrastructure.Data;
 using Coffee.Infrastructure.Identity;
+using Coffee.Infrastructure.Interfaces;
 using Coffee.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +24,8 @@ namespace Coffee.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped<IRepository<Product>, ProductRepository>();
-            services.AddScoped<IRepository<Category>, CategoryRepository>();
-            services.AddScoped<IRepository<Event>, EventRepository>();
-
-            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+            services.RepositoriesInit();
+            services.ServiceInit();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -44,5 +41,18 @@ namespace Coffee.Infrastructure
 
             return services;
         }
+
+        private static void RepositoriesInit(this IServiceCollection services)
+        {
+            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
+            services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
+            services.AddScoped<IBaseRepository<Event>, EventRepository>();
+        }
+
+        private static void ServiceInit(this IServiceCollection services)
+        {
+            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+        }
+
     }
 }

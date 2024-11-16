@@ -7,10 +7,10 @@ namespace Coffee.Application.Events.Commands.CreateEvent
 {
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Event>
     {
-        private readonly IRepository<Event> _repository;
+        private readonly IBaseRepository<Event> _repository;
         private readonly IMapper _mapper;
 
-        public CreateEventCommandHandler(IRepository<Event> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
+        public CreateEventCommandHandler(IBaseRepository<Event> repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
 
         public async Task<Event> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
@@ -18,12 +18,14 @@ namespace Coffee.Application.Events.Commands.CreateEvent
 
             try
             {
-                _repository.Create(events);
+                events = await _repository.CreateAsync(events);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return events;

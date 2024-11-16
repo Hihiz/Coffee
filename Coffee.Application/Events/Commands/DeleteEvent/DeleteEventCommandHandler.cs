@@ -1,4 +1,5 @@
-﻿using Coffee.Application.Interfaces;
+﻿using Coffee.Application.Common.Exceptions;
+using Coffee.Application.Interfaces;
 using Coffee.Domain.Entities;
 using MediatR;
 
@@ -6,27 +7,25 @@ namespace Coffee.Application.Events.Commands.DeleteEvent
 {
     public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, int>
     {
-        private readonly IRepository<Event> _repository;
+        private readonly IBaseRepository<Event> _repository;
 
-        public DeleteEventCommandHandler(IRepository<Event> repository) => _repository = repository;
+        public DeleteEventCommandHandler(IBaseRepository<Event> repository) => _repository = repository;
 
         public async Task<int> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
         {
-            Event events = await _repository.GetById(request.Id);
-
-            if (events == null)
-            {
-                throw new Exception("Новость не найдена");
-            }
+            Event events = await _repository.GetByIdAsync(request.Id) ?? 
+                throw new NotFoundException("Новость не найдена", request.Id);
 
             try
             {
-                _repository.Delete(events);
+                await _repository.Delete(events);
                 await _repository.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Новость не найдена");
+                Console.WriteLine(ex.Message);
+
+                throw;
             }
 
             return events.Id;

@@ -1,6 +1,7 @@
-﻿using Coffee.Application.Models;
+﻿using Coffee.Application.Interfaces;
+using Coffee.Infrastructure.Models;
 
-namespace Coffee.Application.Interfaces
+namespace Coffee.Infrastructure.Interfaces
 {
     public interface IUserAuthenticationService
     {

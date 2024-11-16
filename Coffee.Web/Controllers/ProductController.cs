@@ -30,7 +30,7 @@ namespace Coffee.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetProductDetail(int id)
+        public async Task<ActionResult> GetProductDetail([FromRoute] int id)
         {
             GetProductDetailQuery query = new GetProductDetailQuery(id);
             ProductDetailDto dto = await _mediator.Send(query);
@@ -41,7 +41,7 @@ namespace Coffee.Web.Controllers
         [Authorize(Roles = "Admin")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(CreateProductCommand command)
+        public async Task<ActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
             var result = new CreateProductCommandValidator().Validate(command);
 
@@ -55,7 +55,7 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, UpdateProductCommand command)
+        public async Task<ActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductCommand command)
         {
             if (id != command.Id)
             {
@@ -74,7 +74,7 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteProduct(int id)
+        public async Task<ActionResult> DeleteProduct([FromRoute] int id)
         {
             DeleteProductCommand command = new DeleteProductCommand(id);
 

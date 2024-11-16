@@ -1,4 +1,4 @@
-﻿namespace Coffee.Application.Models
+﻿namespace Coffee.Infrastructure.Models
 {
     public class RegistrationModel
     {

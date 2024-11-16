@@ -31,7 +31,7 @@ namespace Coffee.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEventDetail(int id)
+        public async Task<ActionResult> GetEventDetail([FromRoute] int id)
         {
             GetEventDetailQuery query = new GetEventDetailQuery(id);
             Event events = await _mediator.Send(query);
@@ -41,7 +41,7 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> CreateEvent(CreateEventCommand command)
+        public async Task<ActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
             var result = new CreateEventCommandValidator().Validate(command);
 
@@ -55,7 +55,7 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateEvent(int id, UpdateEventCommand command)
+        public async Task<ActionResult> UpdateEvent([FromRoute] int id, [FromBody] UpdateEventCommand command)
         {
             if (id != command.Id)
             {
@@ -74,7 +74,7 @@ namespace Coffee.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEvent(int id)
+        public async Task<ActionResult> DeleteEvent([FromRoute] int id)
         {
             DeleteEventCommand command = new DeleteEventCommand(id);
 
